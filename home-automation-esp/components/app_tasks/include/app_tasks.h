@@ -2,6 +2,13 @@
 #include "freertos/queue.h"
 #include <time.h>
 
+
+/*
+    São criadas duas estruturas de dados: 
+    1:  sensor_queue_data_t armazena dados referentes aos sensores, 
+        contém duas variáveis double, referentes à temperatura (temp) e humidade (humi)
+    2:  lamp_queue_data_t armazena dados referentes ao estado da lâmpada
+    */
 typedef struct
 {
     double temp;
@@ -13,8 +20,8 @@ typedef struct
     char lamp_state[5];
 } lamp_queue_data_t;
 
-void mqtt_task(void * ignore);
-void sensor_task(void * ignore);
-void display_task(void * ignore);
-void lamp_task(void * ignore);
-void button_task(void * ignore);
+void mqtt_task(void * ignore);     // Função responsável por realizar tarefas relacionadas à comunicação MQTT.
+void sensor_task(void * ignore);   // Função responsável por realizar tarefas relacionadas à leitura de sensores.
+void display_task(void * ignore);  // Função responsável por realizar tarefas relacionadas à exibição de informações.
+void lamp_task(void * ignore);     // Função responsável por realizar tarefas relacionadas ao controle da lâmpada.
+void button_task(void * ignore);   // Função responsável por realizar tarefas relacionadas ao botão.
