@@ -1,13 +1,21 @@
+/**
+ * @file app_tasks.h
+ * 
+ * @brief Declaração das estruturas de dados e tarefas do sistema
+ */
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include <time.h>
 
 
 /*
-    São criadas duas estruturas de dados: 
-    1:  sensor_queue_data_t armazena dados referentes aos sensores, 
-        contém duas variáveis double, referentes à temperatura (temp) e humidade (humi)
-    2:  lamp_queue_data_t armazena dados referentes ao estado da lâmpada
+    @brief sensor_queue_data_t 
+
+    Estrutura de dados para armazenar informações dos sensores como temperatura e umidade.
+
+    @param temp Temperatura medida pelo sensor
+    @param humi Umidade medida pelo sensor
 */
 typedef struct
 {
@@ -15,22 +23,57 @@ typedef struct
     double humi;
 } sensor_queue_data_t;
 
+
+/*
+    @brief lamp_queue_data_t
+
+    Estrutura de dados utilizada para armazenar dados referentes ao estado da lâmpada.
+
+    @param lamp_state Estado da lâmpada (ligada/desligada)
+*/
+
 typedef struct
 {
     char lamp_state[5];
 } lamp_queue_data_t;
 
-/*
-    São criadas funções para implementa tarefas específicas do sistema de automação residencial como:
-    1:Comunicação MQTT
-    2:Leitura de sensores,
-    3:Leitura de informações
-    4:Controle da lâmpada 
-    5:Manipulação de eventos por meio de um botão.
-*/
 
-void mqtt_task(void * ignore);     // Função responsável por realizar tarefas relacionadas à comunicação MQTT.
-void sensor_task(void * ignore);   // Função responsável por realizar tarefas relacionadas à leitura de sensores.
-void display_task(void * ignore);  // Função responsável por realizar tarefas relacionadas à exibição de informações.
-void lamp_task(void * ignore);     // Função responsável por realizar tarefas relacionadas ao controle da lâmpada.
-void button_task(void * ignore);   // Função responsável por realizar tarefas relacionadas ao botão.
+/*
+    @brief mqtt_task
+    
+    Função responsável por realizar tarefas relacionadas à comunicação MQTT.
+   
+*/
+void mqtt_task(void * ignore);    
+
+/*
+    @brief sensor_task
+    
+    Função para implementar tarefa relacionada à leitura de sensores.
+
+*/
+void sensor_task(void * ignore);  
+
+/*
+    @brief display_task
+    Função responsável por realizar tarefas relacionadas à exibição de informações.
+
+*/
+void display_task(void * ignore); 
+
+/*
+    @brief lamp_task
+    
+    Função responsável por realizar tarefas relacionadas ao controle da lâmpada.
+
+*/
+void lamp_task(void * ignore);    
+
+/*
+    @brief button_task
+    
+     Função responsável por realizar tarefas relacionadas ao botão.
+
+*/
+void button_task(void * ignore);  
+
