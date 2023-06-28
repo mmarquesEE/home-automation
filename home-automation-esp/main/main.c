@@ -8,31 +8,31 @@ QueueHandle_t sensor_queue;
 QueueHandle_t lamp_queue;
 QueueHandle_t time_queue;
 
-/*
-   Função Principal: app_main é a função principal que inicia o programa no microcontrolador STM32.
+/**
+ * @brief Função principal do sistema, responsável por iniciar as filas de comunicação
+ * entre tarefas e por iniciar as tarefas.
+ * As tarrefas implementadas são:
+ * - Atualização do display
+ * - Acionamento das lâmpadas
+ * - Leitura dos sensores
+ * - Telemetria (broker mqtt)
+ * - Recebimento de comandos remotos
+ * - Leitura do estado dos botões
 */
-    
 void app_main(void)
 {
-    // Criação das filas para comunicação entre as tarefas do sistema
+    /// Criação das filas para comunicação entre as tarefas do sistema
     sensor_queue = xQueueCreate(1, sizeof(sensor_queue_data_t));
     lamp_queue = xQueueCreate(1, sizeof(lamp_queue_data_t));
     time_queue = xQueueCreate(1, sizeof(time_t));
 
-    // Variáveis do tipo 'TaskHandle_t' para armazenar os identificadores das tarefas
-  
     TaskHandle_t lamp_task_handle;
     TaskHandle_t mqtt_task_handle;
     TaskHandle_t sensor_task_handle;
     TaskHandle_t display_task_handle;
     TaskHandle_t button_task_handle;
     
-    // Criação das tarefas
-
-    /*
-   Função xTaskCreate: app_main é a função usada para criar as tarefas, passando o nome da função da tarefa, tamanho da pilha, parâmetros adicionais, prioridade da tarefa e o endereço para armazenar o identificador da tarefa.
-    */
-    
+    /// Criação das tarefas
     xTaskCreate(lamp_task, "lamp_task", 10000, NULL, 4, &lamp_task_handle); // criando a tarefa 'lamp_task' responsável pelo controle das lâmpadas.
     xTaskCreate(mqtt_task,"mqtt_task",10000, NULL, 2, &mqtt_task_handle);  // criando a tarefa 'mqtt_task' responsável pela comunicação MQTT com um servidor externo.
     xTaskCreate(sensor_task, "sensor_task", 10000, NULL, 1, &sensor_task_handle); // criando a tarefa 'sensor_task' responsável pela leitura de sensores.
