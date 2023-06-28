@@ -48,7 +48,7 @@ static void publisher_task(void *ignore)
     TickType_t xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
     for(;;){
-        xTaskDelayUntil(&xLastWakeTime, 1000/portTICK_PERIOD_MS);
+        xTaskDelayUntil(&xLastWakeTime, 5000/portTICK_PERIOD_MS);
         
         xQueuePeek(sensor_queue, (void *) &sensor_queue_data, 0);
         xQueuePeek(lamp_queue, (void *) &lamp_queue_data, 0);
