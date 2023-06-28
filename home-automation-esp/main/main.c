@@ -18,7 +18,7 @@ void app_main(void)
     TaskHandle_t sensor_task_handle;
     TaskHandle_t display_task_handle;
 
-    xTaskCreate(mqtt_task, "mqtt_task", 10000, NULL, 1, &mqtt_task_handle);
+    xTaskCreate(mqtt_task,"mqtt_task",10000, NULL, 1, &mqtt_task_handle);
     xTaskCreate(sensor_task, "sensor_task", 10000, NULL, 1, &sensor_task_handle);
     xTaskCreate(display_task, "display_task", 10000, NULL, 1, &display_task_handle);
 }

@@ -16,3 +16,4 @@ typedef struct
 void mqtt_task(void * ignore);
 void sensor_task(void * ignore);
 void display_task(void * ignore);
+void lamp_task(void * ignore);

@@ -1,14 +1,27 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include "freertos/FreeRTOS.h"
-#include "app_tasks.h"
-#include "mqtt_client.h"
+#include "esp_system.h"
+#include "esp_partition.h"
+#include "nvs_flash.h"
+#include "esp_event.h"
+#include "esp_netif.h"
+
 #include "esp_log.h"
+#include "mqtt_client.h"
+#include "esp_tls.h"
+#include <sys/param.h>
+#include <time.h>
+#include <sys/time.h>
+#include "esp_sntp.h"
 
 #include "wifi_conn.h"
+#include "app_tasks.h"
 
 const char * TAG = "mqtt_task";
+
+extern const uint8_t mqtt_eclipseprojects_io_pem_start[]   asm("_binary_mqtt_eclipseprojects_io_pem_start");
+extern const uint8_t mqtt_eclipseprojects_io_pem_end[]   asm("_binary_mqtt_eclipseprojects_io_pem_end");
+
 
 extern QueueHandle_t sensor_queue;
 extern QueueHandle_t lamp_queue;
@@ -21,9 +34,16 @@ static void publisher_task(void *ignore)
     sensor_queue_data_t sensor_queue_data;
     lamp_queue_data_t lamp_queue_data;
     
+    esp_sntp_setoperatingmode(ESP_SNTP_OPMODE_POLL);
+    esp_sntp_setservername(0, "pool.ntp.org");
+    esp_sntp_init();
+
     time_t now;
     char strftime_buf[64];
     struct tm timeinfo;
+
+    setenv("TZ", "UTC+3", 1);
+    tzset();
 
     TickType_t xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
@@ -34,13 +54,11 @@ static void publisher_task(void *ignore)
         xQueuePeek(lamp_queue, (void *) &lamp_queue_data, 0);
 
         time(&now);
-        setenv("TZ", "UTC-4", 1);
-        tzset();
-
-        xQueueOverwrite(time_queue, &now);
 
         localtime_r(&now, &timeinfo);
-        strftime(strftime_buf, sizeof(strftime_buf), "%c", &timeinfo);
+        strftime(strftime_buf, sizeof(strftime_buf), "%Y-%m-%d %H:%M:%S", &timeinfo);
+
+        xQueueOverwrite(time_queue, &now);
 
         char datastr[255];
         sprintf(datastr,
@@ -70,7 +88,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     
             if(strcmp(topic,"lamp")){
                 lamp_queue_data_t lamp_queue_data;
-                sprintf(lamp_queue_data.lamp_state, 5, data);
+                sprintf(lamp_queue_data.lamp_state, data);
                 xQueueOverwrite(lamp_queue, &lamp_queue_data);
             }
             break;
@@ -81,9 +99,10 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 
 static void cb_connection_ok(void){
 	esp_mqtt_client_config_t mqtt_config = {
-        .broker.address.uri = "mqtt://192.168.15.166",
-        .credentials.username = "esp32",
-        .credentials.authentication.password = "str20222",
+        .broker.address.uri = "mqtts://b08cfa9706f74c31a53bf2a549d8c1f3.s1.eu.hivemq.cloud:8883",
+        .credentials.username = "str20222",
+        .credentials.authentication.password = "Str20222",
+        .broker.verification.certificate = (const char *)mqtt_eclipseprojects_io_pem_start,
     };
     client = esp_mqtt_client_init(&mqtt_config);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
