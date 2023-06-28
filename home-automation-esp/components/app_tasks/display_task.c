@@ -1,3 +1,9 @@
+/**
+ * @file display_task.c
+ * 
+ * @brief Implementação da tarefa de exibição de informações no display OLED
+ */
+
 #include <stdio.h>
 #include <time.h>
 #include "freertos/FreeRTOS.h"
@@ -10,12 +16,24 @@
 
 #define _I2C_NUMBER(num) I2C_NUM_##num
 #define I2C_NUMBER(num) _I2C_NUMBER(num)
-#define I2C_MASTER_SCL_IO CONFIG_I2C_MASTER_SCL               /*!< gpio number for I2C master clock */
-#define I2C_MASTER_SDA_IO CONFIG_I2C_MASTER_SDA               /*!< gpio number for I2C master data  */
-#define I2C_MASTER_NUM I2C_NUMBER(CONFIG_I2C_MASTER_PORT_NUM) /*!< I2C port number for master dev */
+#define I2C_MASTER_SCL_IO CONFIG_I2C_MASTER_SCL                    /**< Número do pino GPIO para o clock do mestre I2C */
+#define I2C_MASTER_SDA_IO CONFIG_I2C_MASTER_SDA                    /**< Número do pino GPIO para os dados do mestre I2C */
+#define I2C_MASTER_NUM I2C_NUMBER(CONFIG_I2C_MASTER_PORT_NUM)       /**< Número da porta I2C para o mestre */
 
-extern QueueHandle_t sensor_queue;
-extern QueueHandle_t time_queue;
+extern QueueHandle_t sensor_queue;                                  /**< Fila para comunicação com a tarefa de leitura de sensores */
+extern QueueHandle_t time_queue;                                    /**< Fila para comunicação com a tarefa de obtenção do tempo atual */
+
+
+/**
+ * @brief display_task
+ *
+ * Função responsável pela exibição de informações no display OLED.
+ * Ela utiliza a biblioteca ´OLEDDisplay.h´ para controlar o display 
+ * e as filas 'sensor_queue' e 'time_queue' 
+ * Ela obtém os dados do sensor e o tempo atual das filas correspondentes 
+ * e os exibe no display periodicamente a cada 100ms
+ *
+ */
 
 void display_task(void *ignore)
 {
