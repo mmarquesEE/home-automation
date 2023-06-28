@@ -1,3 +1,13 @@
+/**
+ * @file mqtt_task.c
+ * 
+ * @brief Arquivo Responsável por implementar as tarefas de comunicação com um servidor externo
+ *  
+ * Este arquivo contém a implementação da tarefa 'mqtt_task', responsável 
+ * pela inicialização da conexão WiFi e configuração do cliente MQTT.
+ * 
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include "esp_system.h"
@@ -23,11 +33,20 @@ extern const uint8_t mqtt_eclipseprojects_io_pem_start[]   asm("_binary_mqtt_ecl
 extern const uint8_t mqtt_eclipseprojects_io_pem_end[]   asm("_binary_mqtt_eclipseprojects_io_pem_end");
 
 
-extern QueueHandle_t sensor_queue;
-extern QueueHandle_t lamp_queue;
-extern QueueHandle_t time_queue;
+extern QueueHandle_t sensor_queue;  /**< Fila para comunicação com a tarefa do sensor */
+extern QueueHandle_t lamp_queue;    /**< Fila para comunicação com a tarefa da lâmpada */
+extern QueueHandle_t time_queue;    /**< Fila para comunicação com a tarefa de tempo */
 
 esp_mqtt_client_handle_t client;
+
+/**
+ * @brief publisher_task
+ *
+ *  A tarefa publisher_task é responsável por coletar os dados das filas de sensores e lâmpadas usando
+ * `xQueuePeek´ e publica esses dados via MQTT usando `esp_mqtt_client_publish`
+ * e também envia a hora atual para a fila de tempo.
+ * 
+ */
 
 static void publisher_task(void *ignore)
 {
@@ -67,9 +86,21 @@ static void publisher_task(void *ignore)
         esp_mqtt_client_publish(client, "telemetry", datastr, 0, 2, 0);
         vTaskDelay(100/portTICK_PERIOD_MS);
 
-        // ESP_LOGI(TAG, "Mensagem enviada");
     }
 }
+
+/**
+ * @brief mqtt_event_handler
+ *
+ * O manipulador de eventos MQTT é chamado sempre que um evento MQTT é disparado. 
+ * Neste caso, ele lida com o evento de recebimento de dados MQTT e atualiza o 
+ * estado da lâmpada na fila da tarefa da lâmpada.
+ *
+ * @param[in] handler_args Argumentos do manipulador (não utilizados neste caso)
+ * @param[in] base A base do evento
+ * @param[in] event_id O ID do evento
+ * @param[in] event_data Os dados do evento
+ */
 
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {
@@ -97,6 +128,22 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
     }
 }
 
+/**
+ * @brief cb_connection_ok
+ *
+ * A função callback quando a conexão WiFi é estabelecida com sucesso. 
+ * Ela configura o cliente MQTT com as informações necessárias como: 
+ *  1: endereço do broker
+ *  2: credenciais de autenticação 
+ *  3: certificado de verificação
+ * Em seguida registra a manipulação dos eventos MQTT, recebendo os dados. 
+ * Por fim, inicia o cliente MQTT e função `esp_mqtt_client_subscribe` 
+ * é chamada para se inscrever no tópico "lamp"
+ * 
+ * 
+ */
+
+
 static void cb_connection_ok(void){
 	esp_mqtt_client_config_t mqtt_config = {
         .broker.address.uri = "mqtts://b08cfa9706f74c31a53bf2a549d8c1f3.s1.eu.hivemq.cloud:8883",
@@ -114,6 +161,15 @@ static void cb_connection_ok(void){
     TaskHandle_t publisher_task_handle;
     xTaskCreate(publisher_task, "publisher_task", 10000, NULL, 3, &publisher_task_handle);
 }
+
+/**
+ * @brief mqtt_task
+ *
+ * A tarefa mqtt_task é responsável pela inicialização da conexão WiFi e  conexão WiFi e configuração do cliente MQTT
+ * A inicialização é feita por meio da função `wifi_init_sta` e (se estabelecida com sucesso)
+ * retorna ´cb_connection_ok´
+ *
+ */
 
 void mqtt_task(void *ignore)
 {
