@@ -8,7 +8,7 @@
     1:  sensor_queue_data_t armazena dados referentes aos sensores, 
         contém duas variáveis double, referentes à temperatura (temp) e humidade (humi)
     2:  lamp_queue_data_t armazena dados referentes ao estado da lâmpada
-    */
+*/
 typedef struct
 {
     double temp;
@@ -19,6 +19,15 @@ typedef struct
 {
     char lamp_state[5];
 } lamp_queue_data_t;
+
+/*
+    São criadas funções para implementa tarefas específicas do sistema de automação residencial como:
+    1:Comunicação MQTT
+    2:Leitura de sensores,
+    3:Leitura de informações
+    4:Controle da lâmpada 
+    5:Manipulação de eventos por meio de um botão.
+*/
 
 void mqtt_task(void * ignore);     // Função responsável por realizar tarefas relacionadas à comunicação MQTT.
 void sensor_task(void * ignore);   // Função responsável por realizar tarefas relacionadas à leitura de sensores.
