@@ -6,7 +6,7 @@
 /**
  * @brief São criadas duas estruturas de dados: 
  * 1:  sensor_queue_data_t armazena dados referentes aos sensores, contém duas variáveis double, 
- * referentes à temperatura (temp) e humidade (humi)
+ * referentes à temperatura (temp) e umidade (humi)
  * 2:  lamp_queue_data_t armazena dados referentes ao estado da lâmpada
 */
 typedef struct
