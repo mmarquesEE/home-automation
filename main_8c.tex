@@ -1,0 +1,105 @@
+\doxysection{home-\/automation-\/main/home-\/automation-\/esp/main/main.c File Reference}
+\hypertarget{main_8c}{}\label{main_8c}\index{home-\/automation-\/main/home-\/automation-\/esp/main/main.c@{home-\/automation-\/main/home-\/automation-\/esp/main/main.c}}
+
+
+Arquivo Principal do programa no microcontrolador STM32.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \"{}freertos/\+Free\+RTOS.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/queue.\+h\"{}}\newline
+{\ttfamily \#include \"{}app\+\_\+tasks.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\+\_\+main}} (void)
+\begin{DoxyCompactList}\small\item\em app\+\_\+main \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{main_8c_a8ef6c7739752ee9ab50848e42272f87c}{sensor\+\_\+queue}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{main_8c_afe409a0a05865536457c4f0798f9eed0}{lamp\+\_\+queue}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{main_8c_a5816cdfd73f65a8a0b00586ca058b03d}{time\+\_\+queue}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Arquivo Principal do programa no microcontrolador STM32. 
+
+Este arquivo contém a implementação principal do aplicativo de automação residencial. Ele configura as filas de comunicação entre as tarefas e cria as tarefas para controlar a lâmpada, realizar comunicação MQTT, obter dados do sensor, atualizar o display e lidar interrupções de eventos por meio dos botões 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}\label{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70} 
+\index{main.c@{main.c}!app\_main@{app\_main}}
+\index{app\_main@{app\_main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{app\_main()}{app\_main()}}
+{\footnotesize\ttfamily void app\+\_\+main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+app\+\_\+main 
+
+Função que inicia o programa no microcontrolador STM32. Task\+Handle\+\_\+t
+
+Tipo de variável para armazenar os identificadores das tarefas
+
+x\+Task\+Create\textquotesingle{}
+
+Essa função é usada para criar as tarefas do sistema
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em nome} & nome da função da tarefa \\
+\hline
+\mbox{\texttt{ in}}  & {\em tamanho} & tamanho da pilha \\
+\hline
+\mbox{\texttt{ in}}  & {\em adicionais} & parametros adicionais \\
+\hline
+\mbox{\texttt{ in}}  & {\em prioridade} & ordem de prioridade da tarefa \\
+\hline
+\mbox{\texttt{ in}}  & {\em endereco} & endereço de memória da tarefa\\
+\hline
+\end{DoxyParams}
+lamp\+\_\+task
+
+Criação de uma tarefa \textquotesingle{}lamp\+\_\+task\textquotesingle{} responsável pelo controle das lâmpadas.
+
+mqtt\+\_\+task
+
+Criação de uma tarefa \textquotesingle{}mqtt\+\_\+task\textquotesingle{} responsável pela comunicação MQTT com um servidor externo.
+
+sensor\+\_\+task
+
+Criação de uma tarefa \textquotesingle{}sensor\+\_\+task\textquotesingle{} responsável pela leitura de sensores.
+
+display\+\_\+task
+
+Criação de uma tarefa responsável pelo controle do display.
+
+button\+\_\+task
+
+Criação de uma tarefa de botões responsável pelo tratamento de eventos de botões.
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{main_8c_afe409a0a05865536457c4f0798f9eed0}\label{main_8c_afe409a0a05865536457c4f0798f9eed0} 
+\index{main.c@{main.c}!lamp\_queue@{lamp\_queue}}
+\index{lamp\_queue@{lamp\_queue}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{lamp\_queue}{lamp\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t lamp\+\_\+queue}
+
+Fila para comunicação de dados da lâmpada. \Hypertarget{main_8c_a8ef6c7739752ee9ab50848e42272f87c}\label{main_8c_a8ef6c7739752ee9ab50848e42272f87c} 
+\index{main.c@{main.c}!sensor\_queue@{sensor\_queue}}
+\index{sensor\_queue@{sensor\_queue}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sensor\_queue}{sensor\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t sensor\+\_\+queue}
+
+Fila para comunicação de dados do sensor. \Hypertarget{main_8c_a5816cdfd73f65a8a0b00586ca058b03d}\label{main_8c_a5816cdfd73f65a8a0b00586ca058b03d} 
+\index{main.c@{main.c}!time\_queue@{time\_queue}}
+\index{time\_queue@{time\_queue}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{time\_queue}{time\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t time\+\_\+queue}
+
+Fila para comunicação de dados de tempo. 

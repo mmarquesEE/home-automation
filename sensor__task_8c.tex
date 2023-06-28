@@ -1,0 +1,61 @@
+\doxysection{home-\/automation-\/main/home-\/automation-\/esp/components/app\+\_\+tasks/sensor\+\_\+task.c File Reference}
+\hypertarget{sensor__task_8c}{}\label{sensor__task_8c}\index{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/sensor\_task.c@{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/sensor\_task.c}}
+
+
+Arquivo Responsável por implementar as tarefas do sensor.  
+
+
+{\ttfamily \#include \"{}freertos/\+Free\+RTOS.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/task.\+h\"{}}\newline
+{\ttfamily \#include \"{}driver/gpio.\+h\"{}}\newline
+{\ttfamily \#include \"{}sdkconfig.\+h\"{}}\newline
+{\ttfamily \#include \"{}app\+\_\+tasks.\+h\"{}}\newline
+{\ttfamily \#include \"{}dht\+\_\+espidf.\+h\"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{sensor__task_8c_acba8c9cec3425e3a4bbde433b812d4d9}\label{sensor__task_8c_acba8c9cec3425e3a4bbde433b812d4d9} 
+\#define {\bfseries DHT\+\_\+\+IO}~GPIO\+\_\+\+NUM\+\_\+21
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sensor__task_8c_a6493752ed974091bf79fd62d469ee392}{sensor\+\_\+task}} (void \texorpdfstring{$\ast$}{*}ignore)
+\begin{DoxyCompactList}\small\item\em sensor\+\_\+task \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{sensor__task_8c_a8ef6c7739752ee9ab50848e42272f87c}{sensor\+\_\+queue}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Arquivo Responsável por implementar as tarefas do sensor. 
+
+Este arquivo contém a implementação da tarefa \textquotesingle{}sensor\+\_\+task\textquotesingle{}, responsável pela leitura dos dados do sensor DHT11 e o envio dos dados para a tarefa principal através da fila. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{sensor__task_8c_a6493752ed974091bf79fd62d469ee392}\label{sensor__task_8c_a6493752ed974091bf79fd62d469ee392} 
+\index{sensor\_task.c@{sensor\_task.c}!sensor\_task@{sensor\_task}}
+\index{sensor\_task@{sensor\_task}!sensor\_task.c@{sensor\_task.c}}
+\doxysubsubsection{\texorpdfstring{sensor\_task()}{sensor\_task()}}
+{\footnotesize\ttfamily void sensor\+\_\+task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ignore }\end{DoxyParamCaption})}
+
+
+
+sensor\+\_\+task 
+
+A tarefa sensor\+\_\+task é responsável pela leitura dos dados do sensor DHT11 e o envio dos dados para a tarefa principal através de uma fila de comunicação
+
+A leitura dos dados é realizada a cada 1 segundo por meio da função {\ttfamily read\+\_\+dht\+\_\+sensor\+\_\+data} Caso a leitura não seja bem-\/sucedida\+: há um retorno diferente de {\ttfamily DHT\+\_\+\+OK} e é feito um atraso de 10ms antes de uma segunda tentativa Caso a leitura seja bem-\/sucedida\+: armazena valores de temperatura e umidade em uma estrutura {\ttfamily sensor\+\_\+queue\+\_\+data\+\_\+t} e esses vaalores são enviados para a fila {\ttfamily sensor\+\_\+queue} utilizando a função {\ttfamily x\+Queue\+Overwrite} \texorpdfstring{$<$}{<} Temperatura medida pelo sensor DHT11
+
+\texorpdfstring{$<$}{<} Umidade medida pelo sensor DHT11
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{sensor__task_8c_a8ef6c7739752ee9ab50848e42272f87c}\label{sensor__task_8c_a8ef6c7739752ee9ab50848e42272f87c} 
+\index{sensor\_task.c@{sensor\_task.c}!sensor\_queue@{sensor\_queue}}
+\index{sensor\_queue@{sensor\_queue}!sensor\_task.c@{sensor\_task.c}}
+\doxysubsubsection{\texorpdfstring{sensor\_queue}{sensor\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t sensor\+\_\+queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fila para comunicação com a tarefa principal 
