@@ -10,7 +10,7 @@ QueueHandle_t time_queue;
 
 /*
    Função Principal: app_main é a função principal que inicia o programa no microcontrolador STM32.
-/*
+*/
     
 void app_main(void)
 {
@@ -31,7 +31,7 @@ void app_main(void)
 
     /*
    Função xTaskCreate: app_main é a função usada para criar as tarefas, passando o nome da função da tarefa, tamanho da pilha, parâmetros adicionais, prioridade da tarefa e o endereço para armazenar o identificador da tarefa.
-    /*
+    */
     
     xTaskCreate(lamp_task, "lamp_task", 10000, NULL, 4, &lamp_task_handle); // criando a tarefa 'lamp_task' responsável pelo controle das lâmpadas.
     xTaskCreate(mqtt_task,"mqtt_task",10000, NULL, 2, &mqtt_task_handle);  // criando a tarefa 'mqtt_task' responsável pela comunicação MQTT com um servidor externo.
