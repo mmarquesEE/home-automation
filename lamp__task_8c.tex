@@ -1,0 +1,110 @@
+\doxysection{home-\/automation-\/main/home-\/automation-\/esp/components/app\+\_\+tasks/lamp\+\_\+task.c File Reference}
+\hypertarget{lamp__task_8c}{}\label{lamp__task_8c}\index{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/lamp\_task.c@{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/lamp\_task.c}}
+
+
+Implementação da tarefa de controle das lâmpadas.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+{\ttfamily \#include \"{}freertos/\+Free\+RTOS.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/task.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/queue.\+h\"{}}\newline
+{\ttfamily \#include \"{}driver/gpio.\+h\"{}}\newline
+{\ttfamily \#include \"{}app\+\_\+tasks.\+h\"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lamp__task_8c_a2c504265fe179ecd7e7673a87f23b135}{LAMP\+\_\+1}}~GPIO\+\_\+\+NUM\+\_\+32
+\item 
+\#define \mbox{\hyperlink{lamp__task_8c_a32dd84d3ed290070f8b666ddfd4b7423}{LAMP\+\_\+2}}~GPIO\+\_\+\+NUM\+\_\+33
+\item 
+\#define \mbox{\hyperlink{lamp__task_8c_a4f47dddabf79b8802816d9918d3a8f06}{LAMP\+\_\+3}}~GPIO\+\_\+\+NUM\+\_\+26
+\item 
+\#define \mbox{\hyperlink{lamp__task_8c_a04b35dfaf98ff38218e6aa00e1324dec}{LAMP\+\_\+4}}~GPIO\+\_\+\+NUM\+\_\+27
+\item 
+\#define \mbox{\hyperlink{lamp__task_8c_af8baf7d9859733667317e58c0ff707d1}{ESP\+\_\+\+INTR\+\_\+\+FLAG\+\_\+\+DEFAULT}}~0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lamp__task_8c_ad5f8ba7681bb714afe782276ef15d275}{lamp\+\_\+task}} (void \texorpdfstring{$\ast$}{*}ignore)
+\begin{DoxyCompactList}\small\item\em lamp\+\_\+task \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{lamp__task_8c_afe409a0a05865536457c4f0798f9eed0}{lamp\+\_\+queue}}
+\item 
+int \mbox{\hyperlink{lamp__task_8c_a88966908921f2cd44dd89c7f297e8c59}{lamp}} \mbox{[}$\,$\mbox{]} = \{\mbox{\hyperlink{lamp__task_8c_a2c504265fe179ecd7e7673a87f23b135}{LAMP\+\_\+1}},\mbox{\hyperlink{lamp__task_8c_a32dd84d3ed290070f8b666ddfd4b7423}{LAMP\+\_\+2}},\mbox{\hyperlink{lamp__task_8c_a4f47dddabf79b8802816d9918d3a8f06}{LAMP\+\_\+3}},\mbox{\hyperlink{lamp__task_8c_a04b35dfaf98ff38218e6aa00e1324dec}{LAMP\+\_\+4}}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementação da tarefa de controle das lâmpadas. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{lamp__task_8c_af8baf7d9859733667317e58c0ff707d1}\label{lamp__task_8c_af8baf7d9859733667317e58c0ff707d1} 
+\index{lamp\_task.c@{lamp\_task.c}!ESP\_INTR\_FLAG\_DEFAULT@{ESP\_INTR\_FLAG\_DEFAULT}}
+\index{ESP\_INTR\_FLAG\_DEFAULT@{ESP\_INTR\_FLAG\_DEFAULT}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{ESP\_INTR\_FLAG\_DEFAULT}{ESP\_INTR\_FLAG\_DEFAULT}}
+{\footnotesize\ttfamily \#define ESP\+\_\+\+INTR\+\_\+\+FLAG\+\_\+\+DEFAULT~0}
+
+Sinalizador de interrupção padrão do ESP \Hypertarget{lamp__task_8c_a2c504265fe179ecd7e7673a87f23b135}\label{lamp__task_8c_a2c504265fe179ecd7e7673a87f23b135} 
+\index{lamp\_task.c@{lamp\_task.c}!LAMP\_1@{LAMP\_1}}
+\index{LAMP\_1@{LAMP\_1}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{LAMP\_1}{LAMP\_1}}
+{\footnotesize\ttfamily \#define LAMP\+\_\+1~GPIO\+\_\+\+NUM\+\_\+32}
+
+Pino GPIO para a lâmpada 1 \Hypertarget{lamp__task_8c_a32dd84d3ed290070f8b666ddfd4b7423}\label{lamp__task_8c_a32dd84d3ed290070f8b666ddfd4b7423} 
+\index{lamp\_task.c@{lamp\_task.c}!LAMP\_2@{LAMP\_2}}
+\index{LAMP\_2@{LAMP\_2}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{LAMP\_2}{LAMP\_2}}
+{\footnotesize\ttfamily \#define LAMP\+\_\+2~GPIO\+\_\+\+NUM\+\_\+33}
+
+Pino GPIO para a lâmpada 2 \Hypertarget{lamp__task_8c_a4f47dddabf79b8802816d9918d3a8f06}\label{lamp__task_8c_a4f47dddabf79b8802816d9918d3a8f06} 
+\index{lamp\_task.c@{lamp\_task.c}!LAMP\_3@{LAMP\_3}}
+\index{LAMP\_3@{LAMP\_3}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{LAMP\_3}{LAMP\_3}}
+{\footnotesize\ttfamily \#define LAMP\+\_\+3~GPIO\+\_\+\+NUM\+\_\+26}
+
+Pino GPIO para a lâmpada 3 \Hypertarget{lamp__task_8c_a04b35dfaf98ff38218e6aa00e1324dec}\label{lamp__task_8c_a04b35dfaf98ff38218e6aa00e1324dec} 
+\index{lamp\_task.c@{lamp\_task.c}!LAMP\_4@{LAMP\_4}}
+\index{LAMP\_4@{LAMP\_4}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{LAMP\_4}{LAMP\_4}}
+{\footnotesize\ttfamily \#define LAMP\+\_\+4~GPIO\+\_\+\+NUM\+\_\+27}
+
+Pino GPIO para a lâmpada 4 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{lamp__task_8c_ad5f8ba7681bb714afe782276ef15d275}\label{lamp__task_8c_ad5f8ba7681bb714afe782276ef15d275} 
+\index{lamp\_task.c@{lamp\_task.c}!lamp\_task@{lamp\_task}}
+\index{lamp\_task@{lamp\_task}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{lamp\_task()}{lamp\_task()}}
+{\footnotesize\ttfamily void lamp\+\_\+task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ignore }\end{DoxyParamCaption})}
+
+
+
+lamp\+\_\+task 
+
+A tarefa lamp\+\_\+task é responsável pelo controle das lâmpadas com base nos dados recebidos pela fila lamp\+\_\+queue. Ela configura a direção dos pinos GPIO correspondente às lampadas e inicializa o estado com todas apagadas. No laço infinito ela obtem os dados mais recentes da fila ´lamp\+\_\+queue´ por meio de iterações que vão atualizando estado. Se o estado for \textquotesingle{}o\textquotesingle{}\+: liga a lâmpada Caso contrário\+: desliga a lâmpada
+
+Essa tarefa é realizada periodicamente a cada 100ms para verificar atualizações 
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{lamp__task_8c_a88966908921f2cd44dd89c7f297e8c59}\label{lamp__task_8c_a88966908921f2cd44dd89c7f297e8c59} 
+\index{lamp\_task.c@{lamp\_task.c}!lamp@{lamp}}
+\index{lamp@{lamp}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{lamp}{lamp}}
+{\footnotesize\ttfamily int lamp\mbox{[}$\,$\mbox{]} = \{\mbox{\hyperlink{lamp__task_8c_a2c504265fe179ecd7e7673a87f23b135}{LAMP\+\_\+1}},\mbox{\hyperlink{lamp__task_8c_a32dd84d3ed290070f8b666ddfd4b7423}{LAMP\+\_\+2}},\mbox{\hyperlink{lamp__task_8c_a4f47dddabf79b8802816d9918d3a8f06}{LAMP\+\_\+3}},\mbox{\hyperlink{lamp__task_8c_a04b35dfaf98ff38218e6aa00e1324dec}{LAMP\+\_\+4}}\}}
+
+Array com os pinos GPIO das lâmpadas \Hypertarget{lamp__task_8c_afe409a0a05865536457c4f0798f9eed0}\label{lamp__task_8c_afe409a0a05865536457c4f0798f9eed0} 
+\index{lamp\_task.c@{lamp\_task.c}!lamp\_queue@{lamp\_queue}}
+\index{lamp\_queue@{lamp\_queue}!lamp\_task.c@{lamp\_task.c}}
+\doxysubsubsection{\texorpdfstring{lamp\_queue}{lamp\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t lamp\+\_\+queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fila para comunicação com a tarefa principal 

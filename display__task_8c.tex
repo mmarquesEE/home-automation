@@ -1,0 +1,97 @@
+\doxysection{home-\/automation-\/main/home-\/automation-\/esp/components/app\+\_\+tasks/display\+\_\+task.c File Reference}
+\hypertarget{display__task_8c}{}\label{display__task_8c}\index{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/display\_task.c@{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/display\_task.c}}
+
+
+Implementação da tarefa de exibição de informações no display OLED.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \"{}freertos/\+Free\+RTOS.\+h\"{}}\newline
+{\ttfamily \#include \"{}esp\+\_\+log.\+h\"{}}\newline
+{\ttfamily \#include \"{}driver/i2c.\+h\"{}}\newline
+{\ttfamily \#include \"{}sdkconfig.\+h\"{}}\newline
+{\ttfamily \#include \"{}OLEDDisplay.\+h\"{}}\newline
+{\ttfamily \#include \"{}app\+\_\+tasks.\+h\"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{display__task_8c_a38388ca431dfe7534c1deb2d6aadc88b}\label{display__task_8c_a38388ca431dfe7534c1deb2d6aadc88b} 
+\#define {\bfseries \+\_\+\+I2\+C\+\_\+\+NUMBER}(num)~I2\+C\+\_\+\+NUM\+\_\+\#\#num
+\item 
+\Hypertarget{display__task_8c_a7e81f0c40cb8c94fe0aeac6d0e3d3317}\label{display__task_8c_a7e81f0c40cb8c94fe0aeac6d0e3d3317} 
+\#define {\bfseries I2\+C\+\_\+\+NUMBER}(num)~\+\_\+\+I2\+C\+\_\+\+NUMBER(num)
+\item 
+\#define \mbox{\hyperlink{display__task_8c_a033b5e8a30541fe4ff939a62fdb7a43d}{I2\+C\+\_\+\+MASTER\+\_\+\+SCL\+\_\+\+IO}}~CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+SCL
+\item 
+\#define \mbox{\hyperlink{display__task_8c_af47631d568bba17edf9d1ea042602bb6}{I2\+C\+\_\+\+MASTER\+\_\+\+SDA\+\_\+\+IO}}~CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+SDA
+\item 
+\#define \mbox{\hyperlink{display__task_8c_aab9e642b6200f95fcbd2ad7466aaa2d3}{I2\+C\+\_\+\+MASTER\+\_\+\+NUM}}~I2\+C\+\_\+\+NUMBER(CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+PORT\+\_\+\+NUM)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{display__task_8c_aa1c5cabaa6aa761074a4a46faad41f19}{display\+\_\+task}} (void \texorpdfstring{$\ast$}{*}ignore)
+\begin{DoxyCompactList}\small\item\em display\+\_\+task \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{display__task_8c_a8ef6c7739752ee9ab50848e42272f87c}{sensor\+\_\+queue}}
+\item 
+Queue\+Handle\+\_\+t \mbox{\hyperlink{display__task_8c_a5816cdfd73f65a8a0b00586ca058b03d}{time\+\_\+queue}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementação da tarefa de exibição de informações no display OLED. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{display__task_8c_aab9e642b6200f95fcbd2ad7466aaa2d3}\label{display__task_8c_aab9e642b6200f95fcbd2ad7466aaa2d3} 
+\index{display\_task.c@{display\_task.c}!I2C\_MASTER\_NUM@{I2C\_MASTER\_NUM}}
+\index{I2C\_MASTER\_NUM@{I2C\_MASTER\_NUM}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_MASTER\_NUM}{I2C\_MASTER\_NUM}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+MASTER\+\_\+\+NUM~I2\+C\+\_\+\+NUMBER(CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+PORT\+\_\+\+NUM)}
+
+Número da porta I2C para o mestre \Hypertarget{display__task_8c_a033b5e8a30541fe4ff939a62fdb7a43d}\label{display__task_8c_a033b5e8a30541fe4ff939a62fdb7a43d} 
+\index{display\_task.c@{display\_task.c}!I2C\_MASTER\_SCL\_IO@{I2C\_MASTER\_SCL\_IO}}
+\index{I2C\_MASTER\_SCL\_IO@{I2C\_MASTER\_SCL\_IO}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_MASTER\_SCL\_IO}{I2C\_MASTER\_SCL\_IO}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+MASTER\+\_\+\+SCL\+\_\+\+IO~CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+SCL}
+
+Número do pino GPIO para o clock do mestre I2C \Hypertarget{display__task_8c_af47631d568bba17edf9d1ea042602bb6}\label{display__task_8c_af47631d568bba17edf9d1ea042602bb6} 
+\index{display\_task.c@{display\_task.c}!I2C\_MASTER\_SDA\_IO@{I2C\_MASTER\_SDA\_IO}}
+\index{I2C\_MASTER\_SDA\_IO@{I2C\_MASTER\_SDA\_IO}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{I2C\_MASTER\_SDA\_IO}{I2C\_MASTER\_SDA\_IO}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+MASTER\+\_\+\+SDA\+\_\+\+IO~CONFIG\+\_\+\+I2\+C\+\_\+\+MASTER\+\_\+\+SDA}
+
+Número do pino GPIO para os dados do mestre I2C 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{display__task_8c_aa1c5cabaa6aa761074a4a46faad41f19}\label{display__task_8c_aa1c5cabaa6aa761074a4a46faad41f19} 
+\index{display\_task.c@{display\_task.c}!display\_task@{display\_task}}
+\index{display\_task@{display\_task}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{display\_task()}{display\_task()}}
+{\footnotesize\ttfamily void display\+\_\+task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ignore }\end{DoxyParamCaption})}
+
+
+
+display\+\_\+task 
+
+Função responsável pela exibição de informações no display OLED. Ela utiliza a biblioteca ´\+OLEDDisplay.\+h´ para controlar o display e as filas \textquotesingle{}sensor\+\_\+queue\textquotesingle{} e \textquotesingle{}time\+\_\+queue\textquotesingle{} Ela obtém os dados do sensor e o tempo atual das filas correspondentes e os exibe no display periodicamente a cada 100ms 
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{display__task_8c_a8ef6c7739752ee9ab50848e42272f87c}\label{display__task_8c_a8ef6c7739752ee9ab50848e42272f87c} 
+\index{display\_task.c@{display\_task.c}!sensor\_queue@{sensor\_queue}}
+\index{sensor\_queue@{sensor\_queue}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{sensor\_queue}{sensor\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t sensor\+\_\+queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fila para comunicação com a tarefa de leitura de sensores \Hypertarget{display__task_8c_a5816cdfd73f65a8a0b00586ca058b03d}\label{display__task_8c_a5816cdfd73f65a8a0b00586ca058b03d} 
+\index{display\_task.c@{display\_task.c}!time\_queue@{time\_queue}}
+\index{time\_queue@{time\_queue}!display\_task.c@{display\_task.c}}
+\doxysubsubsection{\texorpdfstring{time\_queue}{time\_queue}}
+{\footnotesize\ttfamily Queue\+Handle\+\_\+t time\+\_\+queue\hspace{0.3cm}{\ttfamily [extern]}}
+
+Fila para comunicação com a tarefa de obtenção do tempo atual 

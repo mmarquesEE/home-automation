@@ -1,0 +1,92 @@
+\doxysection{home-\/automation-\/main/home-\/automation-\/esp/components/app\+\_\+tasks/button\+\_\+task.c File Reference}
+\hypertarget{button__task_8c}{}\label{button__task_8c}\index{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/button\_task.c@{home-\/automation-\/main/home-\/automation-\/esp/components/app\_tasks/button\_task.c}}
+
+
+Implementação interrupção dos eventos com botões.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \"{}freertos/\+Free\+RTOS.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/task.\+h\"{}}\newline
+{\ttfamily \#include \"{}freertos/queue.\+h\"{}}\newline
+{\ttfamily \#include \"{}driver/gpio.\+h\"{}}\newline
+{\ttfamily \#include \"{}app\+\_\+tasks.\+h\"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{button__task_8c_af58f5adf2c4e479e30f2efaa24e38324}{BUTTON\+\_\+1}}~GPIO\+\_\+\+NUM\+\_\+34
+\item 
+\#define \mbox{\hyperlink{button__task_8c_a46acb6114f87027ec8fa196c02ea7d81}{BUTTON\+\_\+2}}~GPIO\+\_\+\+NUM\+\_\+35
+\item 
+\#define \mbox{\hyperlink{button__task_8c_aec518359a13ecef01c1f596fea855364}{BUTTON\+\_\+3}}~GPIO\+\_\+\+NUM\+\_\+19
+\item 
+\#define \mbox{\hyperlink{button__task_8c_a9bbe94022b11df96e0f4e9147822ed79}{BUTTON\+\_\+4}}~GPIO\+\_\+\+NUM\+\_\+18
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{button__task_8c_a0f6e461103aeeca5a505e4f4f1c492b1}{button\+\_\+task}} (void \texorpdfstring{$\ast$}{*}ignore)
+\begin{DoxyCompactList}\small\item\em button\+\_\+task \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{button__task_8c_afa15b70bb5702dce6b8ff8c2366bc996}\label{button__task_8c_afa15b70bb5702dce6b8ff8c2366bc996} 
+int {\bfseries button} \mbox{[}$\,$\mbox{]} = \{\mbox{\hyperlink{button__task_8c_af58f5adf2c4e479e30f2efaa24e38324}{BUTTON\+\_\+1}},\mbox{\hyperlink{button__task_8c_a46acb6114f87027ec8fa196c02ea7d81}{BUTTON\+\_\+2}},\mbox{\hyperlink{button__task_8c_aec518359a13ecef01c1f596fea855364}{BUTTON\+\_\+3}},\mbox{\hyperlink{button__task_8c_a9bbe94022b11df96e0f4e9147822ed79}{BUTTON\+\_\+4}}\}
+\item 
+\Hypertarget{button__task_8c_afe409a0a05865536457c4f0798f9eed0}\label{button__task_8c_afe409a0a05865536457c4f0798f9eed0} 
+Queue\+Handle\+\_\+t {\bfseries lamp\+\_\+queue}
+\item 
+\Hypertarget{button__task_8c_a89f234133d3efe315836311cbf21c64b}\label{button__task_8c_a89f234133d3efe315836311cbf21c64b} 
+int {\bfseries state} = 0
+\item 
+\Hypertarget{button__task_8c_a40befa7a2c75d5d285912af7eabcdc39}\label{button__task_8c_a40befa7a2c75d5d285912af7eabcdc39} 
+Queue\+Handle\+\_\+t {\bfseries interput\+Queue}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementação interrupção dos eventos com botões. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{button__task_8c_af58f5adf2c4e479e30f2efaa24e38324}\label{button__task_8c_af58f5adf2c4e479e30f2efaa24e38324} 
+\index{button\_task.c@{button\_task.c}!BUTTON\_1@{BUTTON\_1}}
+\index{BUTTON\_1@{BUTTON\_1}!button\_task.c@{button\_task.c}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_1}{BUTTON\_1}}
+{\footnotesize\ttfamily \#define BUTTON\+\_\+1~GPIO\+\_\+\+NUM\+\_\+34}
+
+Pino GPIO para o botão 1 \Hypertarget{button__task_8c_a46acb6114f87027ec8fa196c02ea7d81}\label{button__task_8c_a46acb6114f87027ec8fa196c02ea7d81} 
+\index{button\_task.c@{button\_task.c}!BUTTON\_2@{BUTTON\_2}}
+\index{BUTTON\_2@{BUTTON\_2}!button\_task.c@{button\_task.c}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_2}{BUTTON\_2}}
+{\footnotesize\ttfamily \#define BUTTON\+\_\+2~GPIO\+\_\+\+NUM\+\_\+35}
+
+Pino GPIO para o botão 1 \Hypertarget{button__task_8c_aec518359a13ecef01c1f596fea855364}\label{button__task_8c_aec518359a13ecef01c1f596fea855364} 
+\index{button\_task.c@{button\_task.c}!BUTTON\_3@{BUTTON\_3}}
+\index{BUTTON\_3@{BUTTON\_3}!button\_task.c@{button\_task.c}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_3}{BUTTON\_3}}
+{\footnotesize\ttfamily \#define BUTTON\+\_\+3~GPIO\+\_\+\+NUM\+\_\+19}
+
+Pino GPIO para o botão 1 \Hypertarget{button__task_8c_a9bbe94022b11df96e0f4e9147822ed79}\label{button__task_8c_a9bbe94022b11df96e0f4e9147822ed79} 
+\index{button\_task.c@{button\_task.c}!BUTTON\_4@{BUTTON\_4}}
+\index{BUTTON\_4@{BUTTON\_4}!button\_task.c@{button\_task.c}}
+\doxysubsubsection{\texorpdfstring{BUTTON\_4}{BUTTON\_4}}
+{\footnotesize\ttfamily \#define BUTTON\+\_\+4~GPIO\+\_\+\+NUM\+\_\+18}
+
+Pino GPIO para o botão 1 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{button__task_8c_a0f6e461103aeeca5a505e4f4f1c492b1}\label{button__task_8c_a0f6e461103aeeca5a505e4f4f1c492b1} 
+\index{button\_task.c@{button\_task.c}!button\_task@{button\_task}}
+\index{button\_task@{button\_task}!button\_task.c@{button\_task.c}}
+\doxysubsubsection{\texorpdfstring{button\_task()}{button\_task()}}
+{\footnotesize\ttfamily void button\+\_\+task (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ignore }\end{DoxyParamCaption})}
+
+
+
+button\+\_\+task 
+
+Função responsável por monitorar os botões e atualizar o estado da lâmpada com base nas interrupções geradas pelos botões.
+
+Os pinos GPIO dos botões configurados, os manipuladores de interrupção são adicionados e a fila ´interrupt\+Queue´ é criada. No laço infinito, a tarefa aguarda uma interrupção na fila ´interrupt\+Queue´. Quando isso ocorre o estado atual da lâmpada na fila ´lamp\+\_\+queue´ é obtido e atualizado com base no botão pressionado e o novo estado da lâmpada é sobrescrito. 
