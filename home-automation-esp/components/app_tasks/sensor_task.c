@@ -6,7 +6,7 @@
 
 #include "dht_espidf.h"
 
-#define DHT_IO CONFIG_DHT11_GPIO
+#define DHT_IO GPIO_NUM_21
 
 extern QueueHandle_t sensor_queue;
 

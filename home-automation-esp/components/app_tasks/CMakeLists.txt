@@ -1,4 +1,4 @@
-idf_component_register(SRCS "display_task.c" "sensor_task.c" "mqtt_task.c" "lamp_task.c"
+idf_component_register(SRCS "display_task.c" "sensor_task.c" "mqtt_task.c" "lamp_task.c" "button_task.c"
                     INCLUDE_DIRS "include"
                     REQUIRES driver
                              mqtt

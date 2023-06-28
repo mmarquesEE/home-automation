@@ -8,10 +8,10 @@
 #include "driver/gpio.h"
 #include "app_tasks.h"
 
-#define LAMP_1 GPIO_NUM_18
-#define LAMP_2 GPIO_NUM_19
-#define LAMP_3 GPIO_NUM_22
-#define LAMP_4 GPIO_NUM_23
+#define LAMP_1 GPIO_NUM_32
+#define LAMP_2 GPIO_NUM_33
+#define LAMP_3 GPIO_NUM_26
+#define LAMP_4 GPIO_NUM_27
 #define ESP_INTR_FLAG_DEFAULT 0
 
 extern QueueHandle_t lamp_queue;
@@ -25,20 +25,21 @@ void lamp_task(void * ignore)
     gpio_set_direction(LAMP_4, GPIO_MODE_OUTPUT);
     
     lamp_queue_data_t lamp_queue_data;
-    sprintf(lamp_queue_data.lamp_state, "%c%c%c%c", 0,0,0,0);
-    xQueueSend(lamp_queue, &lamp_queue_data, 0);
+    sprintf(lamp_queue_data.lamp_state, "%c%c%c%c", 'f','f','f','f');
+    xQueueOverwrite(lamp_queue, &lamp_queue_data);
 
     TickType_t xLastWakeTime;
     xLastWakeTime = xTaskGetTickCount();
     for(;;){
         xTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
     
-        //xQueueReceive(lamp_queue, &lamp_queue_data, 100);
+        xQueuePeek(lamp_queue, &lamp_queue_data, 100);
         for(int i=0;i<4;i++){
             uint8_t lstate = (uint8_t) lamp_queue_data.lamp_state[i];
-            //if (lstate == 1) 
-            gpio_set_level(lamp[i],0);
-            //else gpio_set_level(lamp[i],0);
+            if (lstate == 'o') 
+                gpio_set_level(lamp[i],1);
+            else
+                gpio_set_level(lamp[i],0);
         }
     }
 }

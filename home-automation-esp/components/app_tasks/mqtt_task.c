@@ -85,12 +85,12 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         case MQTT_EVENT_DATA:
             sprintf(topic, "%.*s", event->topic_len, event->topic);
             sprintf(data, "%.*s", event->data_len, event->data);
-    
-            if(strcmp(topic,"lamp")){
-                lamp_queue_data_t lamp_queue_data;
-                sprintf(lamp_queue_data.lamp_state, data);
-                xQueueOverwrite(lamp_queue, &lamp_queue_data);
-            }
+
+            ESP_LOGI("SUB","SUB");
+
+            lamp_queue_data_t lamp_queue_data;
+            sprintf(lamp_queue_data.lamp_state, data);
+            xQueueOverwrite(lamp_queue, &lamp_queue_data);
             break;
         default:
             break;
@@ -109,7 +109,7 @@ static void cb_connection_ok(void){
     esp_mqtt_client_start(client);
     vTaskDelay(1000);
 
-    esp_mqtt_client_subscribe(client, "lamp", 1);
+    esp_mqtt_client_subscribe(client, "lamp", 2);
 
     TaskHandle_t publisher_task_handle;
     xTaskCreate(publisher_task, "publisher_task", 10000, NULL, 3, &publisher_task_handle);
